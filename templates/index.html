@@ -32,13 +32,26 @@
 
     function sendMessage() { // A function that will be called when the button to send a message is clicked.
         let messageInputBoxValue = document.getElementById('newMessage').value; // Get the current value of the input message box.
+        let usernameInputBoxValue = document.getElementById('username').value; // Get the current value of the input box containing the user's desired username.
+
+        if (usernameInputBoxValue === '') { // Check if the username input box is empty
+            alert("Please enter a username."); // If it is, inform the user they must have a username
+            return; // Exit the function early, preventing the WebSocket event from being fired.
+        };
 
         if (messageInputBoxValue === '') { // If the message input box was empty...
             alert("Please enter a message."); // Inform the user to enter a message.
             return; // Finish calling the function early, so the WebSocket event isn't fired.
         };
 
-        socket.emit('recieve_message', {message: messageInputBoxValue}); // Send a 'recieve_message' WebSocket event to the Python backend,
+        let finalMessageUsername = usernameInputBoxValue += ":"; // Adding a colon to the end of the username.
+                                                                 // Current message format: username:
+        
+        finalMessageUsername = usernameInputBoxValue += " "; // Adding an empty space to the end of the username.
+        
+        let finalMessage = finalMessageUsername + messageInputBoxValue; // Current message format: username: message
+
+        socket.emit('recieve_message', {message: finalMessage});         // Send a 'recieve_message' WebSocket event to the Python backend,
                                                                          // containing the message wanting to be sent by the user.
         
         document.getElementById('newMessage').value = ''; // Clear the message input box, ready for the next message to be entered.                                                                 
@@ -52,5 +65,6 @@
 
 <ul style="list-style: none;" id="feed"></ul> <!-- Creating the feed where server and user messages will be sent. -->
 
-<input type="text" id="newMessage"> <!-- Creating an input box where a user can type the message they want to send -->
+<input type="text" id="username" placeholder="Username"> <!-- Creating an input box where a user can type their desired username -->
+<input type="text" id="newMessage" placeholder="Message"> <!-- Creating an input box where a user can type the message they want to send -->
 <button id="sendmessage" onclick="sendMessage()">Send</button> <!-- A button that when clicked will attempt to send a message. -->
