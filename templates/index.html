@@ -30,6 +30,27 @@
         addToFeed("A user has disconnected from the server.") // Add the disconnection announcement to the feed for all users.
     });
 
+    function sendMessage() { // A function that will be called when the button to send a message is clicked.
+        let messageInputBoxValue = document.getElementById('newMessage').value; // Get the current value of the input message box.
+
+        if (messageInputBoxValue === '') { // If the message input box was empty...
+            alert("Please enter a message."); // Inform the user to enter a message.
+            return; // Finish calling the function early, so the WebSocket event isn't fired.
+        };
+
+        socket.emit('recieve_message', {message: messageInputBoxValue}); // Send a 'recieve_message' WebSocket event to the Python backend,
+                                                                         // containing the message wanting to be sent by the user.
+        
+        document.getElementById('newMessage').value = ''; // Clear the message input box, ready for the next message to be entered.                                                                 
+    };
+
+    socket.on('addMessageToFeed', function(message) { // When the Python backend sends an 'addMessageToFeed' to the JavaScript backend...
+        addToFeed(message.message); // Add the sent message to the feed for everyone connected to the website.
+    });
+
 </script>
 
 <ul style="list-style: none;" id="feed"></ul> <!-- Creating the feed where server and user messages will be sent. -->
+
+<input type="text" id="newMessage"> <!-- Creating an input box where a user can type the message they want to send -->
+<button id="sendmessage" onclick="sendMessage()">Send</button> <!-- A button that when clicked will attempt to send a message. -->

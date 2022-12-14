@@ -22,6 +22,13 @@ def handle_disconnect():
     socketio.emit('announceUserDisconnect') # Send an 'announceUserDisconnect' WebSocket event to the
                                             # JavaScript backend.
 
+@socketio.on('recieve_message') # When a 'recieve_message' WebSocket event is recieved from the backend...
+def handle_message(data):
+    print(data) # Output the contents of the message that was sent to the terminal
+    socketio.emit('addMessageToFeed', data) # Send an 'addMessageToFeed' WebSocket event to the
+                                            # JavaScript backend. This event contains the message
+                                            # that was sent by the user.
+
 if __name__ == '__main__':
     socketio.run(app) # Allows the Python script to access Flask functionality
                       # and Flask-SocketIO functionality when it is executed.
