@@ -1,4 +1,4 @@
-from flask import Flask # Importing Flask libraries.
+from flask import Flask, render_template # Importing Flask libraries.
 from flask_socketio import SocketIO # Importing the Flask-SocketIO library.
 
 app = Flask(__name__) # Creating an instance of a Flask application
@@ -9,8 +9,7 @@ socketio = SocketIO(app) # Wrapping the instance of the Flask application,
 
 @app.route("/") # When a client connects to 127.0.0.1:XXXX/...
 def index():
-    print("Succesful connection") # Print this message in the console.
-    return "<h1>Test Page</h1>" # Render this HTML code on the page.
+    return render_template('index.html', async_mode=socketio.async_mode) # Serve the client index.html from the 'templates' directory.
 
 if __name__ == '__main__':
     socketio.run(app) # Allows the Python script to access Flask functionality
