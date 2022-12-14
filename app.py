@@ -17,6 +17,11 @@ def handle_connection():
                                          # JavaScript backend, for all users currently connected
                                          # to the webpage.
 
+@socketio.on('disconnect') # When a 'disconnect' WebSocket event is recieved from the backend...
+def handle_disconnect():
+    socketio.emit('announceUserDisconnect') # Send an 'announceUserDisconnect' WebSocket event to the
+                                            # JavaScript backend.
+
 if __name__ == '__main__':
     socketio.run(app) # Allows the Python script to access Flask functionality
                       # and Flask-SocketIO functionality when it is executed.
