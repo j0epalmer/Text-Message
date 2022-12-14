@@ -1,1 +1,27 @@
-<h1>Test Page</h1> <!--Will display "Test Page" on the webpage when served.-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf-8">
+    var socket = io(); // Establishes a connection with the Python backend.
+    
+    socket.on('connect', function() {}); // When the webpage is loaded, send the
+                                        // 'connect' WebSocket event to the backend.
+
+    function addToFeed(message) { // The process of adding something to the chat feed
+                                  // is the same for every message regardless if it
+                                  // was sent by a user or by the server.
+                                  // This function is created so that code is not
+                                  // repeated.
+
+        const listElement = document.createElement('li'); // Creating a list element
+                                                          // and assigning it to the constant listElement
+        const listElementText = document.createTextNode(message); // Adding text to the previously created list element.
+                                                                  // The string passed into the function is added to the list element.
+        listElement.appendChild(listElementText); // Finalising the newly created list element.
+        document.getElementById("feed").appendChild(listElement); // Adding the text to the feed.                                         
+    };
+
+    socket.on('announceUserConnect', function() { // When the JavaScript backend recieves the 'announceUserConnect' WebSocket event from the Python backend...
+        addToFeed("A user has connected to the server.") // Add the new connection announcement to the feed for all users.
+    });
+</script>
+
+<ul style="list-style: none;" id="feed"></ul> <!-- Creating the feed where server and user messages will be sent. -->

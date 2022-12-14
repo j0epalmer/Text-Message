@@ -11,6 +11,12 @@ socketio = SocketIO(app) # Wrapping the instance of the Flask application,
 def index():
     return render_template('index.html', async_mode=socketio.async_mode) # Serve the client index.html from the 'templates' directory.
 
+@socketio.on('connect') # When a 'connect' WebSocket event is recieved from the backend...
+def handle_connection():
+    socketio.emit('announceUserConnect') # Send an 'announceUserConnect' WebSocket event to the
+                                         # JavaScript backend, for all users currently connected
+                                         # to the webpage.
+
 if __name__ == '__main__':
     socketio.run(app) # Allows the Python script to access Flask functionality
                       # and Flask-SocketIO functionality when it is executed.
