@@ -12,3 +12,6 @@
  ```
  4. Run the local server with `python3 app.py`
  5. Visit 127.0.0.1:5000 in your desired web browser (or whatever port number the script assigns!)
+
+# A Video Demonstration
+https://streamable.com/j6800u
